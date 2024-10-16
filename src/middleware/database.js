@@ -37,6 +37,10 @@ class database{
         }
     }
 
+    async delete(id, colecao){
+        await this.database.collection(colecao).deleteOne({user: id})
+    }
+
 
 }
 

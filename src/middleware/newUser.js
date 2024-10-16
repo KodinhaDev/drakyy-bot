@@ -9,21 +9,18 @@ async function newUser(id){
     if(user){
         await db.end();
         return user;
+        
     }else{
         const userValue = {
             'user': id, 
             'money': 1000, 
             'mana': 100, 
+            'life': 200, 
             'forca': 10, 
             'velocidade': 10, 
             'kokusens': 0, 
             'inventario': [ 
-                    {
-                    'nome': 'Katana longa','quantidade': 1, 'id': 1
-                    },
-                    {
-                    'nome': 'Curativo', 'quantidade': 3, 'id': 2
-                    }
+
                 ]
             }
                 ;

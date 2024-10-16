@@ -1,4 +1,5 @@
 const { EmbedBuilder } = require('discord.js');
+const itemGet = require('../../middleware/items/itemController');
 
 async function command(interaction, user) {
     if (!user) {
@@ -6,8 +7,17 @@ async function command(interaction, user) {
     }
 
     if (!Array.isArray(user.inventario) || user.inventario.length === 0) {
-        return interaction.reply('Seu inventário está vazio.');
+        let currentEmbed = new EmbedBuilder()
+            .setColor('#2c3e50')  
+            .setTitle(`Inventário de ${interaction.user.username} está vazio!`)
+            .setDescription('Você ainda não possui itens em seu inventário. Comece a coletar itens para vê-los aqui!')
+            .setFooter({ text: `Comando requisitado por ${interaction.user.username}` }) 
+            .setTimestamp()
+            .setThumbnail(interaction.user.avatarURL());
+    
+        return interaction.reply({ embeds: [currentEmbed] });
     }
+    
 
     const maxFieldsPerEmbed = 25; 
     let embeds = []; 
@@ -18,8 +28,8 @@ async function command(interaction, user) {
         .setTimestamp()
         .setThumbnail(interaction.user.avatarURL());
 
-    user.inventario.forEach((inv, index) => {
-        if (inv && typeof inv === 'object' && inv.nome && typeof inv.quantidade === 'number') {
+    user.inventario.forEach((inv) => {
+        if (inv && typeof inv === 'object' && typeof inv.quantidade === 'number') {
             if (currentEmbed.data.fields && currentEmbed.data.fields.length >= maxFieldsPerEmbed) {
                 embeds.push(currentEmbed); 
                 currentEmbed = new EmbedBuilder()
@@ -27,7 +37,9 @@ async function command(interaction, user) {
                     .setTitle(`${interaction.user.username}'s Inventário`);
             }
 
-            currentEmbed.addFields({ name: inv.nome, value: `${inv.quantidade} unidade(s)`, inline: true });
+            const item = itemGet(inv.id);
+
+            currentEmbed.addFields({ name: item.name + ' - ' + inv.quantidade + ' unidade(s)', value: item.description, inline: true });
         } else {
             console.error('Item inválido no inventário:', inv);
         }
