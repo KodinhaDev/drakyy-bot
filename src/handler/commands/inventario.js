@@ -1,9 +1,18 @@
 const { EmbedBuilder } = require('discord.js');
 const itemGet = require('../../middleware/items/itemController');
+const Database = require('../../middleware/database');
+const db = new Database(process.env.MONGO);
 
 async function command(interaction, user) {
-    if (!user) {
-        return interaction.reply('Erro: usuário não encontrado.');
+    const usuario = interaction.options.getUser('usuario');
+    if(usuario != null){
+        await db.connect();
+        user = await db.find({user: usuario.id}, 'user');
+        if(!user){
+            return interaction.reply({ content: 'Usuário não registrado no database.', ephemeral: true });
+        }
+        interaction.user = usuario; 
+        await db.end()
     }
 
     if (!Array.isArray(user.inventario) || user.inventario.length === 0) {

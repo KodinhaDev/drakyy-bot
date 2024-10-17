@@ -7,6 +7,7 @@ async function command(interaction) {
         .setTitle(`Seja bem vindo ao shop, ${interaction.user.username}!`)
         .setFooter({ text: `Comando requisitado por ${interaction.user.username}` })
         .setTimestamp()
+        .setDescription('Para comprar os itens listados, de /comprar {item} {quantidade}.')
         .setThumbnail(interaction.user.avatarURL());
     items.forEach(item => {
         if (!item.value) return;

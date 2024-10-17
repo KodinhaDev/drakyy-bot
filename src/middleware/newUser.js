@@ -1,35 +1,40 @@
 const Database = require('./database');
 const db = new Database(process.env.MONGO);
 
-async function newUser(id){
+const defaultUser = {
+    'user': '',
+    'money': 1000,
+    'mana': 100,
+    'life': 200,
+    'forca': 10,
+    'turno': true,
+    'velocidade': 10,
+    'kokusens': 0,
+    'inventario': []
+};
 
-    await db.connect()
+async function newUser(id) {
+    await db.connect();
+    let user = await db.find({ 'user': id }, 'user');
+    
+    if (user) {
+        let updated = false;
+        for (let key in defaultUser) {
+            if (!(key in user)) {
+                user[key] = defaultUser[key];
+                updated = true;
+            }
+        }
 
-    const user = await db.find({'user': id}, 'user');
-    if(user){
+        if (updated) await db.update({ 'user': id }, user, 'user');
         await db.end();
         return user;
-        
-    }else{
-        const userValue = {
-            'user': id, 
-            'money': 1000, 
-            'mana': 100, 
-            'life': 200, 
-            'forca': 10, 
-            'velocidade': 10, 
-            'kokusens': 0, 
-            'inventario': [ 
-
-                ]
-            }
-                ;
-        await db.insert(userValue, 'user');
-        await db.end()
-        return userValue;
+    } else {
+        const newUserValue = { ...defaultUser, 'user': id };
+        await db.insert(newUserValue, 'user');
+        await db.end();
+        return newUserValue;
     }
-
-
 }
 
 module.exports = newUser;

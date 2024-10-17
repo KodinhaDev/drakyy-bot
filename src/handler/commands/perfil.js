@@ -1,6 +1,15 @@
 const { EmbedBuilder } = require('discord.js');
+const Database = require('../../middleware/database');
+const db = new Database(process.env.MONGO);
 
-function command(interaction, user) {
+async function command(interaction, user) {
+    const usuario = interaction.options.getUser('usuario');
+    if(usuario != null){
+        await db.connect();
+        user = await db.find({user: usuario.id}, 'user');
+        interaction.user = usuario;
+        await db.end();
+    }
     const embed = new EmbedBuilder()
         .setColor('#2c3e50') 
         .setTitle(`Perfil de ${interaction.user.username}`)
@@ -14,7 +23,7 @@ function command(interaction, user) {
             { name: '🌌 | Kokusens', value: `${user.kokusens}`, inline: true },
         )
         .setThumbnail(interaction.user.avatarURL()) 
-        .setFooter({ text: `Comando requisitado por ${interaction.user.username}` }) 
+        .setFooter({ text: `Comando requisitado por ${interaction.user.username}` })
         .setTimestamp(); 
 
     interaction.reply({ embeds: [embed] });
