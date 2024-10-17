@@ -1,13 +1,15 @@
 const Database = require('../../middleware/database');
 const db = new Database(process.env.MONGO);
 const ataqueFind = require('../../middleware/items/ataqueController');
+const newuser = require('../../middleware/newUser');
 
 async function command(interaction, user){
     const usuario = interaction.options.getUser('user');
+    await newuser(usuario.id);
     const ataqueId = interaction.options.getNumber('ataque');
     const ataque = ataqueFind(ataqueId);
     
-    var dano = ataque.dmgBase * user.forca;
+    var dano = ataque.dmgBase * ( 1 + (user.forca / 100));
     await db.connect();
     const userAtacado = await db.find({user: usuario.id}, 'user')
     userAtacado.life -= dano;

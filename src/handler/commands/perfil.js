@@ -1,9 +1,11 @@
 const { EmbedBuilder } = require('discord.js');
 const Database = require('../../middleware/database');
 const db = new Database(process.env.MONGO);
+const newuser = require('../../middleware/newUser');
 
 async function command(interaction, user) {
     const usuario = interaction.options.getUser('usuario');
+    await newuser(usuario.id);
     if(usuario != null){
         await db.connect();
         user = await db.find({user: usuario.id}, 'user');
