@@ -5,7 +5,10 @@ const newuser = require('../../middleware/newUser');
 
 async function command(interaction, user) {
     const usuario = interaction.options.getUser('usuario');
-    await newuser(usuario.id);
+    try{
+        await newuser(usuario.id);
+    }catch(e){
+    }
     if(usuario != null){
         await db.connect();
         user = await db.find({user: usuario.id}, 'user');

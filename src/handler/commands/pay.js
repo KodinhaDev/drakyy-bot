@@ -4,7 +4,10 @@ const newuser = require('../../middleware/newUser');
 
 async function command(interaction, user) {
     const usuario = interaction.options.getUser('usuario');
-    await newuser(usuario.id);
+    try{
+        await newuser(usuario.id);
+    }catch(e){
+    }
     const quantia = interaction.options.getNumber('quantia');
     if(interaction.user.id == usuario.id) return interaction.reply({ content: 'Você não pode enviar dinheiro para si mesmo.', ephemeral: true });
     await db.connect();

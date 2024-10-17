@@ -5,7 +5,10 @@ const newuser = require('../../middleware/newUser');
 
 async function command(interaction, user){
     const usuario = interaction.options.getUser('user');
-    await newuser(usuario.id);
+    try{
+        await newuser(usuario.id);
+    }catch(e){
+    }
     const ataqueId = interaction.options.getNumber('ataque');
     const ataque = ataqueFind(ataqueId);
     
