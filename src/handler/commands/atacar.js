@@ -13,7 +13,7 @@ async function command(interaction, user){
     await db.connect();
     const userAtacado = await db.find({user: usuario.id}, 'user')
     userAtacado.life -= dano;
-    if(!user.turno){
+    if(user.turno == false){
         return interaction.reply('Você já deu seu ataque, espere ser atacado para atacar novamente.');
     }
     if(userAtacado.life <= 0){
