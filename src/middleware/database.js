@@ -10,13 +10,11 @@ class database{
     async connect(){
         await this.client.connect();
         this.database = this.client.db(this.dbName);
-        // console.log('🍃 | Conexão com o database estabelecida.')
     }
 
     async end(){
         await this.client.close();
         this.database = null;
-        // console.log('🍃 | Conexão com o database encerrada.')
     }
 
     async insert(item, colecao){

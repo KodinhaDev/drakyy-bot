@@ -1,6 +1,8 @@
 console.clear()
 const { Client, GatewayIntentBits } = require('discord.js');
 require('dotenv').config();
+const express = require('express');
+const app = express();
 require('./middleware/loadCommands');
 const newuser = require('./middleware/newUser');
 
@@ -46,3 +48,6 @@ client.on('messageCreate', async (message) => {
 })
 
 client.login(process.env.TOKEN);
+app.listen(6060, () => {
+    console.log('🍿 | Porta aberta em 6060.');
+})

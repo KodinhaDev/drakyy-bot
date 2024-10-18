@@ -4,28 +4,32 @@ const ataqueFind = require('../../middleware/items/ataqueController');
 const newuser = require('../../middleware/newUser');
 
 async function command(interaction, user){
-    const usuario = interaction.options.getUser('user');
+    const usuario = await interaction.options.getUser('user');
     try{
         await newuser(usuario.id);
     }catch(e){
     }
-    const ataqueId = interaction.options.getNumber('ataque');
+    const ataqueId = await interaction.options.getNumber('ataque');
     const ataque = ataqueFind(ataqueId);
     
     var dano = ataque.dmgBase * ( 1 + (user.forca / 100));
     await db.connect();
     const userAtacado = await db.find({user: usuario.id}, 'user')
+    if(userAtacado.life <= 0) return await interaction.reply({ content: 'Este usuário está morto.', ephemeral: true})
     userAtacado.life -= dano;
     if(user.turno == false){
-        return interaction.reply('Você já deu seu ataque, espere ser atacado para atacar novamente.');
+        await db.end();
+        return await interaction.reply({content: 'Você já deu seu ataque, espere ser atacado para atacar novamente.', ephemeral: true});
     }
     if(userAtacado.life <= 0){
         userAtacado.life = 0;
         userAtacado.turno = true;
         user.turno = false;
-            interaction.reply(`O usuário <@${userAtacado.user}> foi morto por <@${user.user}> usando um ${ataque.name}.`);
+            await interaction.reply(`O usuário <@${userAtacado.user}> foi morto por <@${user.user}> usando um ${ataque.name}.`);
     }else{
-            interaction.reply({content: `Você atacou com sucesso o usuário.`, ephemeral: true});
+        userAtacado.turno = true;
+        user.turno = false;
+            await interaction.reply({content: `Você atacou com sucesso o usuário.`, ephemeral: true});
             try{
                 await usuario.send(`Você foi atacado por ${interaction.user.username} em <#${interaction.channel.id}>.`)
             }catch(e){
