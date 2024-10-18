@@ -10,11 +10,7 @@ class database{
     async connect(){
         await this.client.connect();
         this.database = this.client.db(this.dbName);
-    }
-
-    async end(){
-        await this.client.close();
-        this.database = null;
+        console.log('🍃 | Conectado ao database.')
     }
 
     async insert(item, colecao){
@@ -47,4 +43,6 @@ class database{
 
 }
 
-module.exports = database;
+const db = new database(process.env.MONGO);
+db.connect();
+module.exports = db;

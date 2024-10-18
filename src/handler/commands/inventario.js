@@ -1,7 +1,6 @@
 const { EmbedBuilder } = require('discord.js');
 const itemGet = require('../../middleware/items/itemController');
-const Database = require('../../middleware/database');
-const db = new Database(process.env.MONGO);
+const db = require('../../middleware/database');
 const newuser = require('../../middleware/newUser');
 
 async function command(interaction, user) {
@@ -11,13 +10,11 @@ async function command(interaction, user) {
     }catch(e){
     }
     if(usuario != null){
-        await db.connect();
         user = await db.find({user: usuario.id}, 'user');
         if(!user){
             return interaction.editReply({ content: 'Usuário não registrado no database.', ephemeral: true });
         }
         interaction.user = usuario; 
-        await db.end()
     }
 
     if (!Array.isArray(user.inventario) || user.inventario.length === 0) {

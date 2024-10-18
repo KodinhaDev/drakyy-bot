@@ -1,10 +1,19 @@
 const items = require('../../middleware/items/items');
-const Database = require('../../middleware/database');
-const db = new Database(process.env.MONGO);
+const db = require('../../middleware/database');
+const { EmbedBuilder } = require('discord.js'); // Importando EmbedBuilder
+
+// Template do Embed
+function createEmbed(title, description, user, color = '#2c3e50') {
+    return new EmbedBuilder()
+        .setColor(color)
+        .setTitle(title)
+        .setDescription(description)
+        .setFooter({ text: `Comando requisitado por ${user.username}` })
+        .setTimestamp()
+        .setThumbnail(user.avatarURL());
+}
 
 async function command(interaction, user) {
-    await db.connect();
-    
     try {
         const itemId = parseInt(interaction.options.getString('item'));
         let quantidade = interaction.options.getNumber('quantidade');
@@ -16,13 +25,15 @@ async function command(interaction, user) {
         const item = items.find(item => item.id === itemId);
 
         if (!item) {
-            return interaction.editReply({ content: 'Item não encontrado.', ephemeral: true });
+            const embed = createEmbed('Erro', 'Item não encontrado.', interaction.user);
+            return interaction.editReply({ content: '', embeds: [embed], ephemeral: true });
         }
 
         const totalValue = item.value * quantidade;
 
         if (totalValue > user.money) {
-            return interaction.editReply({ content: 'Você não tem dinheiro suficiente para comprar isso.', ephemeral: true });
+            const embed = createEmbed('Erro', 'Você não tem dinheiro suficiente para comprar isso.', interaction.user);
+            return interaction.editReply({ content: '', embeds: [embed], ephemeral: true });
         }
 
         const itemInv = user.inventario.find(inv => inv.id === itemId);
@@ -38,12 +49,12 @@ async function command(interaction, user) {
         await db.delete(interaction.user.id, 'user');
         await db.insert(user, 'user');
         
-        interaction.editReply({ content: 'Compra realizada com sucesso!', ephemeral: true });
+        const successEmbed = createEmbed('Compra Realizada', `Você comprou **${quantidade}x ${item.name}** por **${totalValue}R$**!`, interaction.user);
+        return interaction.editReply({ content: '', embeds: [successEmbed], ephemeral: true });
     } catch (error) {
         console.error('Erro ao processar a compra:', error);
-        interaction.editReply({ content: 'Ocorreu um erro ao realizar a compra. Tente novamente mais tarde.', ephemeral: true });
-    } finally {
-        await db.end();
+        const embed = createEmbed('Erro', 'Ocorreu um erro ao realizar a compra. Tente novamente mais tarde.', interaction.user);
+        return interaction.editReply({ content: '', embeds: [embed], ephemeral: true });
     }
 }
 

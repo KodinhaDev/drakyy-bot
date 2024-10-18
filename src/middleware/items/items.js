@@ -5,6 +5,7 @@ const items = [
         value: 400,
         dmg: 30,
         life: false,
+        type: 'atack',
         id: 1
     },
     {
@@ -13,6 +14,7 @@ const items = [
         value: 250,
         dmg: 20,
         life: false,
+        type: 'atack',
         id: 2
     },
     {
@@ -20,7 +22,16 @@ const items = [
         description: 'Um dos dedos do rei das maldições Sukuna.',
         value: false,
         dmg: false,
+        use: true,
         id: 3
+    },
+    {
+        name: 'Kit primeiros socorros',
+        description: 'Um kit para curar sua vida por completa, gasta um turno.',
+        value: 200,
+        dmg: false,
+        use: true,
+        id: 4
     }
 ];
 

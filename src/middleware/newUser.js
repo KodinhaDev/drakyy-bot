@@ -1,20 +1,31 @@
-const Database = require('./database');
-const db = new Database(process.env.MONGO);
+const db = require('./database');
+// const db = new Database(process.env.MONGO);
 
 const defaultUser = {
     'user': '',
     'money': 1000,
     'mana': 100,
     'life': 200,
+    'level': 0,
+    'xp': 0,
+    'maxLife': 200,
     'forca': 10,
     'turno': true,
     'velocidade': 10,
-    'kokusens': 0,
+    'desmaio': {
+        desmaiado: false,
+        lastDate: null,
+        desmaios: 0,
+    },
+    'ataques': [
+        {id: 1},
+        {id: 2}
+    ],
     'inventario': []
 };
 
 async function newUser(id) {
-    await db.connect();
+    // await db.connect();
     let user = await db.find({ 'user': id }, 'user');
     
     if (user) {
@@ -27,12 +38,10 @@ async function newUser(id) {
         }
 
         if (updated) await db.update({ 'user': id }, user, 'user');
-        await db.end();
         return user;
     } else {
         const newUserValue = { ...defaultUser, 'user': id };
         await db.insert(newUserValue, 'user');
-        await db.end();
         return newUserValue;
     }
 }
