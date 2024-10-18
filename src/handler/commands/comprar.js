@@ -16,13 +16,13 @@ async function command(interaction, user) {
         const item = items.find(item => item.id === itemId);
 
         if (!item) {
-            return interaction.reply({ content: 'Item não encontrado.', ephemeral: true });
+            return interaction.editReply({ content: 'Item não encontrado.', ephemeral: true });
         }
 
         const totalValue = item.value * quantidade;
 
         if (totalValue > user.money) {
-            return interaction.reply({ content: 'Você não tem dinheiro suficiente para comprar isso.', ephemeral: true });
+            return interaction.editReply({ content: 'Você não tem dinheiro suficiente para comprar isso.', ephemeral: true });
         }
 
         const itemInv = user.inventario.find(inv => inv.id === itemId);
@@ -38,10 +38,10 @@ async function command(interaction, user) {
         await db.delete(interaction.user.id, 'user');
         await db.insert(user, 'user');
         
-        interaction.reply({ content: 'Compra realizada com sucesso!', ephemeral: true });
+        interaction.editReply({ content: 'Compra realizada com sucesso!', ephemeral: true });
     } catch (error) {
         console.error('Erro ao processar a compra:', error);
-        interaction.reply({ content: 'Ocorreu um erro ao realizar a compra. Tente novamente mais tarde.', ephemeral: true });
+        interaction.editReply({ content: 'Ocorreu um erro ao realizar a compra. Tente novamente mais tarde.', ephemeral: true });
     } finally {
         await db.end();
     }

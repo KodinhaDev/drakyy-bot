@@ -14,7 +14,7 @@ async function command(interaction, user) {
         await db.connect();
         user = await db.find({user: usuario.id}, 'user');
         if(!user){
-            return interaction.reply({ content: 'Usuário não registrado no database.', ephemeral: true });
+            return interaction.editReply({ content: 'Usuário não registrado no database.', ephemeral: true });
         }
         interaction.user = usuario; 
         await db.end()
@@ -29,7 +29,7 @@ async function command(interaction, user) {
             .setTimestamp()
             .setThumbnail(interaction.user.avatarURL());
     
-        return interaction.reply({ embeds: [currentEmbed] });
+        return interaction.editReply({content: '', embeds: [currentEmbed] });
     }
     
 
@@ -64,7 +64,7 @@ async function command(interaction, user) {
     }
 
     for (const embed of embeds) {
-        await interaction.reply({ embeds: [embed]});
+        await interaction.editReply({content: '', embeds: [embed]});
     }
 }
 

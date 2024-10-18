@@ -15,21 +15,21 @@ async function command(interaction, user){
     var dano = ataque.dmgBase * ( 1 + (user.forca / 100));
     await db.connect();
     const userAtacado = await db.find({user: usuario.id}, 'user')
-    if(userAtacado.life <= 0) return await interaction.reply({ content: 'Este usuário está morto.', ephemeral: true})
+    if(userAtacado.life <= 0) return await interaction.editReply({ content: 'Este usuário está morto.', ephemeral: true})
     userAtacado.life -= dano;
     if(user.turno == false){
         await db.end();
-        return await interaction.reply({content: 'Você já deu seu ataque, espere ser atacado para atacar novamente.', ephemeral: true});
+        return await interaction.editReply({content: 'Você já deu seu ataque, espere ser atacado para atacar novamente.', ephemeral: true});
     }
     if(userAtacado.life <= 0){
         userAtacado.life = 0;
         userAtacado.turno = true;
         user.turno = false;
-            await interaction.reply(`O usuário <@${userAtacado.user}> foi morto por <@${user.user}> usando um ${ataque.name}.`);
+            await interaction.editReply(`O usuário <@${userAtacado.user}> foi morto por <@${user.user}> usando um ${ataque.name}.`);
     }else{
         userAtacado.turno = true;
         user.turno = false;
-            await interaction.reply({content: `Você atacou com sucesso o usuário.`, ephemeral: true});
+            await interaction.editReply({content: `Você atacou com sucesso o usuário.`, ephemeral: true});
             try{
                 await usuario.send(`Você foi atacado por ${interaction.user.username} em <#${interaction.channel.id}>.`)
             }catch(e){

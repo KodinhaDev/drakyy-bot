@@ -15,7 +15,7 @@ async function command(interaction) {
             value: ataque.description
         });
     });
-    await interaction.reply({ embeds: [ataquesEmbed]})
+    await interaction.editReply({content: '', embeds: [ataquesEmbed]});
 }
 
 module.exports = command;

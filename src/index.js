@@ -26,13 +26,14 @@ client.once('ready', () => {
 client.on('interactionCreate', async (interaction) => {
     const user = await newuser(interaction.user.id);
     if (!interaction.isCommand()) return;
+    await interaction.reply({content: 'Processando comando...', ephemeral: true});
     const file = interaction.commandName + '.js';
     try {
         const func = require(`./handler/commands/${file}`)
         await func(interaction, user);
     } catch (e) {
         console.error(e)
-        interaction.reply('Erro interno. Erro reportado.')
+        interaction.editReply('Erro interno. Erro reportado.')
     }
 
 })

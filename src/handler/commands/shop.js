@@ -18,7 +18,7 @@ async function command(interaction) {
                 : item.description + ' - dano base de ' + item.dmg
         });
     });
-    await interaction.reply({ embeds: [shop]})
+    await interaction.editReply({content: '', embeds: [shop]})
 }
 
 module.exports = command;

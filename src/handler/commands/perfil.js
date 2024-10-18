@@ -31,7 +31,7 @@ async function command(interaction, user) {
         .setFooter({ text: `Comando requisitado por ${interaction.user.username}` })
         .setTimestamp(); 
 
-    interaction.reply({ embeds: [embed] });
+    interaction.editReply({content: '', embeds: [embed] });
 }
 
 module.exports = command;
