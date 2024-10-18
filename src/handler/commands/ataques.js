@@ -11,8 +11,8 @@ async function command(interaction) {
         .setThumbnail(interaction.user.avatarURL());
         ataques.forEach(ataque => {
             ataquesEmbed.addFields({
-            name: `${ataque.name} - ${ataque.dmgBase} ⚔️`,
-            value: ataque.description
+            name: `${ataque.name} - ${ataque.dmgBase} Dano base.`,
+            value: ataque.description + ' Libera no level ' + ataque.level + '.'
         });
     });
     await interaction.editReply({content: '', embeds: [ataquesEmbed]});

@@ -25,6 +25,10 @@ async function command(interaction, user) {
     const ataqueId = await interaction.options.getNumber('ataque');
     const ataque = ataqueFind(ataqueId);
 
+    if(ataque.level > user.level){
+        return await interaction.editReply({content: '', embeds: [createEmbed('Erro', `Você não pode usar ${ataque.name.toLowerCase()}, pois para usar ele precisa ser level ${ataque.level} ou superior.`, interaction.user)]})
+    }
+
     var dano = Math.floor(ataque.dmgBase * (1 + (user.forca / 100)));
     const userAtacado = await db.find({ user: usuario.id }, 'user');
 

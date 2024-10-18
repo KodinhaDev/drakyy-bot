@@ -18,7 +18,7 @@ const ataques = [
     },
     {
         name: 'Cotovelada',
-        description: 'Uma cotovelada no seu oponente',
+        description: 'Uma cotovelada no seu oponente.',
         dmgBase: 20,
         level: 5,
         rating: 80,
