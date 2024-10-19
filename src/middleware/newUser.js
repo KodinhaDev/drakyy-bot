@@ -9,6 +9,7 @@ const defaultUser = {
     'maxLife': 200,
     'level': 0,
     'levelMagico': 0,
+    'lastTurno': null,
     'xp': 0,
     'xpMagico': 0,
     'forca': 10,

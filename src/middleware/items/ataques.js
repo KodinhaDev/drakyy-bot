@@ -1,7 +1,7 @@
 const ataques = [
     {
         name: 'Soco',
-        description: 'Um simples soco.',
+        description: 'Um simples soco,',
         dmgBase: 10,
         level: 0,
         rating: 95,
@@ -9,23 +9,23 @@ const ataques = [
     },
     {
         name: 'Chute',
-        description: 'Um simples chute.',
+        description: 'Um simples chute,',
         dmgBase: 15,
         level: 0,
-        rating: 75,
+        rating: 80,
         id: 2
     },
     {
         name: 'Cotovelada',
-        description: 'Uma cotovelada no seu oponente.',
+        description: 'Uma cotovelada no seu oponente,',
         dmgBase: 20,
-        level: 5,
+        level: 3,
         rating: 80,
         id: 3
     },
     {
         name: 'Chute giratório',
-        description: 'Um chute, mas girando no ar.',
+        description: 'Um chute, mas girando no ar,',
         dmgBase: 45,
         level: 5,
         rating: 65,
@@ -33,7 +33,7 @@ const ataques = [
     },
     {
         name: 'Arremesso de pedra',
-        description: 'O usuário arremessa uma pedra no inimigo.',
+        description: 'O usuário arremessa uma pedra no inimigo,',
         dmgBase: 10,
         level: 6,
         rating: 100,
@@ -41,7 +41,7 @@ const ataques = [
     },
     {
         name: 'Soco na garganta',
-        description: 'Um soco na garganta no oponente.',
+        description: 'Um soco na garganta no oponente,',
         dmgBase: 40,
         level: 7,
         rating: 85,
@@ -49,7 +49,7 @@ const ataques = [
     },
     {
         name: 'Joelhada',
-        description: 'Uma joelhada no torso do inimigo.',
+        description: 'Uma joelhada no torso do inimigo,',
         dmgBase: 45,
         level: 10,
         rating: 70,
@@ -57,7 +57,7 @@ const ataques = [
     },
     {
         name: 'Cruzado de direita',
-        description: 'Um soco cruzado com grande impacto.',
+        description: 'Um soco cruzado com grande impacto,',
         dmgBase: 35,
         level: 13,
         rating: 90,
@@ -65,7 +65,7 @@ const ataques = [
     },
     {
         name: 'Cabeçada',
-        description: 'Uma forte cabeçada no oponente.',
+        description: 'Uma forte cabeçada no oponente,',
         dmgBase: 25,
         level: 15,
         rating: 85,
@@ -73,7 +73,7 @@ const ataques = [
     },
     {
         name: 'Pancada com o ombro',
-        description: 'Você usa o ombro para empurrar e causar dano ao inimigo.',
+        description: 'Você usa o ombro para empurrar e causar dano ao inimigo,',
         dmgBase: 20,
         level: 15,
         rating: 100,
@@ -81,7 +81,7 @@ const ataques = [
     },
     {
         name: 'Pisada',
-        description: 'Uma forte pisada no chão que pode desequilibrar o oponente.',
+        description: 'Uma forte pisada no chão que pode desequilibrar o oponente,',
         dmgBase: 40,
         level: 20,
         rating: 80,
@@ -89,7 +89,7 @@ const ataques = [
     },
     {
         name: 'Soco duplo',
-        description: 'Dois socos rápidos em sequência no oponente.',
+        description: 'Dois socos rápidos em sequência no oponente,',
         dmgBase: 50,
         level: 20,
         rating: 80,

@@ -1,5 +1,6 @@
 const levels = require('./items/levels');
 const db = require('./database');
+const embedConstructor = require('./generateEmbed');
 
 async function userXp(client, user){
     const xp = levels.find(level => level.level == user.level);
@@ -12,9 +13,9 @@ async function userXp(client, user){
         const userToNotify = await client.users.fetch(user.user);
         if(xp.m){
             user.money += xp.m;
-            await userToNotify.send('Parabens! Você passou para o level **' + user.level + '**, e ganhou **' + xp.m +  '** Ouros.');
+            await userToNotify.send({embeds: [await embedConstructor('Parabéns!', 'Você passou para o level **' + user.level + '**, e ganhou **' + xp.m +  '** Ouros.')]});
         }else{
-            await userToNotify.send('Parabens! Você passou para o level ' + user.level);
+            await userToNotify.send({embeds: [await embedConstructor('Parabéns!', 'Você passou para o level ' + user.level)]});
         }
         return db.update({user: user.user}, user, 'user');
     }
@@ -24,9 +25,9 @@ async function userXp(client, user){
         const userToNotify = await client.users.fetch(user.user);
         if(xpMagico.m){
             user.money += xpMagico.m + xpMagico.m + xpMagico.m;
-            await userToNotify.send('Parabens! Você passou para o level mágico **' + user.levelMagico + '**, e ganhou **' + xpMagico.m +  '** Ouros.');
+            await userToNotify.send({embeds: [await embedConstructor('Parabéns!', 'Você passou para o level mágico **' + user.levelMagico + '**, e ganhou **' + xpMagico.m +  '** Ouros.')]});
         }else{
-            await userToNotify.send('Parabens! Você passou para o level mágico ' + user.levelMagico);
+            await userToNotify.send({embeds: [await embedConstructor('Parabéns!', 'Você passou para o level mágico ' + user.levelMagico + '.')]});
         }
         return db.update({user: user.user}, user, 'user');
     }

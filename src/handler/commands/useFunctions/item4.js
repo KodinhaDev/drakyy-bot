@@ -18,6 +18,18 @@ async function command(interaction, user) {
         .setTimestamp()
         .setThumbnail(interaction.user.avatarURL());
 
+    const embedInexistente = new EmbedBuilder()
+        .setColor('#2c3e50')
+        .setTitle('Erro')
+        .setDescription('Você não pode usar kit, pois não está no seu turno.')
+        .setFooter({ text: `Comando requisitado por ${interaction.user.username}` })
+        .setTimestamp()
+        .setThumbnail(interaction.user.avatarURL());
+
+    if(user.turno == false){
+            return interaction.editReply({content: '', embeds: [embedInexistente]});
+    }
+
     if(user.life == user.maxLife){
             return interaction.editReply({content: '', embeds: [embedErro]});
     }
@@ -37,6 +49,7 @@ async function command(interaction, user) {
         });
         user.life = user.maxLife; 
         user.turno = false;
+        user.lastTurno = Date.now() + 5 * 60 * 1000;
         await db.update({ user: user.user }, user, 'user');  
         await interaction.editReply({content: '', embeds: [embedSucesso] });  
     } else {

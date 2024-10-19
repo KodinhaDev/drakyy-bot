@@ -1,7 +1,7 @@
 const magicas = [
     {
         name: 'Red Punishment',
-        description: 'O usuário concentra a energia amaldiçoada em seu punho e desfere um ataque.',
+        description: 'O usuário concentra a energia amaldiçoada em seu punho e desfere um ataque,',
         level: 5,
         dmgBase: 80,
         rating: 95,
@@ -10,7 +10,7 @@ const magicas = [
     },
     {
         name: 'Black Flash',
-        description: 'Um golpe explosivo que atinge o oponente em um instante, causando grande dano.',
+        description: 'Um golpe explosivo que atinge o oponente em um instante, causando grande dano,',
         level: 7,
         dmgBase: 120,
         rating: 90,
@@ -19,7 +19,7 @@ const magicas = [
     },
     {
         name: 'Divine Dogs',
-        description: 'O usuário invoca cães espirituais que atacam o inimigo com ferocidade.',
+        description: 'O usuário invoca cães espirituais que atacam o inimigo com ferocidade,',
         level: 10,
         dmgBase: 150,
         rating: 85,
@@ -28,7 +28,7 @@ const magicas = [
     },
     {
         name: 'Idle Death Gamble',
-        description: 'Um ataque de alto risco que pode causar um dano massivo, mas tem uma chance de falhar.',
+        description: 'Um ataque de alto risco que pode causar um dano massivo, mas tem uma chance de falhar,',
         level: 15,
         dmgBase: 175,
         rating: 75,
@@ -37,7 +37,7 @@ const magicas = [
     },
     {
         name: 'Cursed Technique Lapse: Idle Death Gamble',
-        description: 'Uma técnica amaldiçoada que causa dano em área, afetando múltiplos inimigos ao mesmo tempo.',
+        description: 'Uma técnica amaldiçoada que causa dano em área, afetando múltiplos inimigos ao mesmo tempo,',
         level: 17,
         dmgBase: 200,
         rating: 80,
@@ -46,7 +46,7 @@ const magicas = [
     },
     {
         name: 'Limitless',
-        description: 'O usuário utiliza a técnica Limitless para desferir um golpe que ignora todas as defesas do oponente.',
+        description: 'O usuário utiliza a técnica Limitless para desferir um golpe que ignora todas as defesas do oponente,',
         level: 20,
         dmgBase: 300,
         rating: 100,

@@ -12,6 +12,7 @@ async function command(interaction, user) {
         await newuser(usuario.id);
     } catch (e) {
     }
+    const reqPor = interaction.user.username
     if (usuario != null) {
         user = await db.find({ user: usuario.id }, 'user');
         interaction.user = usuario;
@@ -19,7 +20,7 @@ async function command(interaction, user) {
     const embed = new EmbedBuilder()
         .setColor('#2c3e50')
         .setTitle(`Perfil de ${interaction.user.username}`)
-        .setDescription(`Aqui estão suas informações, ${interaction.user.username}!`)
+        .setDescription(`Aqui estão as informações de ${interaction.user.username}!`)
         .addFields(
             { name: '💰 | Ouro', value: `${user.money}`, inline: true },
             { name: '🪄 | Energia Amaldiçoada', value: `${user.energia}`, inline: true },
@@ -31,7 +32,7 @@ async function command(interaction, user) {
             { name: '💪 | Força', value: `${user.forca}`, inline: true },
         )
         .setThumbnail(interaction.user.avatarURL())
-        .setFooter({ text: `Comando requisitado por ${interaction.user.username}` })
+        .setFooter({ text: `Comando requisitado por ${reqPor}` })
         .setTimestamp();
 
     interaction.editReply({ content: '', embeds: [embed], ephermal: false });

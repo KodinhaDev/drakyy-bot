@@ -9,6 +9,7 @@ const descanso = require('./middleware/userDescanso');
 const userXp = require('./middleware/userXp');
 const ocupado = require('./middleware/ocupado');
 const treinamento = require('./middleware/treinamento');
+const turno = require('./middleware/turno');
 
 const client = new Client({
     intents: [
@@ -33,7 +34,7 @@ client.on('interactionCreate', async (interaction) => {
     const user = await newuser(interaction.user.id);
     const file = interaction.commandName + '.js';
     const ocupad = await ocupado(interaction, user)
-    if(ocupad == true){
+    if(ocupad == true && interaction.commandName != 'descansar' && interaction.commandName != 'treinar'){
         return;
     }
     try {
@@ -41,7 +42,7 @@ client.on('interactionCreate', async (interaction) => {
         await func(interaction, user);
     } catch (e) {
         console.error(e)
-        interaction.editReply('Erro interno. Erro reportado.')
+        interaction.editReply('Erro interno, logs reportadas.')
     }
 })
 
@@ -55,7 +56,8 @@ client.on('messageCreate', async (message) => {
     const user = await newuser(message.author.id);
     await descanso(client, user);
     await userXp(client, user);
-    await treinamento(client, user)
+    await treinamento(client, user);
+    await turno(client, user);
 })
 
 client.login(process.env.TOKEN);

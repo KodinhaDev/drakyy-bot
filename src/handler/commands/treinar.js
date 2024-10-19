@@ -1,7 +1,11 @@
 const db = require('../../middleware/database');
 const { EmbedBuilder } = require('discord.js');
+const embedConstructor = require('../../middleware/generateEmbed');
 
 async function command(interaction, user) {
+    if(user.desmaio.desmaiado == true){
+        return interaction.editReply({ content: '', embeds: [ await embedConstructor('Aviso', 'Você não pode iniciar um treinamento pois está desmaiado.', interaction.user)]});
+    }
     const tipo = interaction.options.getNumber('tipo');
     const tempo = interaction.options.getNumber('tempo');
 

@@ -29,8 +29,8 @@ async function command(interaction) {
 
         ataquesPagina.forEach(ataque => {
             embed.addFields({
-                name: `${ataque.name} - ${ataque.dmgBase} Dano base.`,
-                value: `${ataque.description} Libera no level ${tipo === 2 ? 'mágico' : ''} ${ataque.level}${tipo === 2 ? ', e gasta ' + ataque.energia + ' de energia amaldiçoada.' : '.'}`
+                name: `${ataque.name}: ${ataque.dmgBase} de dano, ${ataque.rating}% de acerto.`,
+                value: `${ataque.description} libera no level ${tipo === 2 ? 'mágico' : ''} ${ataque.level}${tipo === 2 ? ', e gasta ' + ataque.energia + ' de energia amaldiçoada.' : '.'}`
             });
         });
 

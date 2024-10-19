@@ -1,4 +1,5 @@
 const db = require('./database');
+const embedConstructor = require('./generateEmbed');
 
 async function checkAwake(client, user) {
     
@@ -15,7 +16,7 @@ async function checkAwake(client, user) {
 
         try {
             const userToNotify = await client.users.fetch(user.user);
-            await userToNotify.send('Você acordou do seu desmaio!');
+            await userToNotify.send({embeds: [await embedConstructor('Aviso!', `<@${user.user}>, você acordou do seu descanso, já pode fazer suas ações normalmente.`)]});
         } catch (e) {
         }
     }
