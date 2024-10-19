@@ -1,3 +1,6 @@
+const db = require('./database');
+const embedConstructor = require('./generateEmbed');
+
 async function treinamento(client, user) {
 
     const treinoData = user.treinamento.terminoTreino;
