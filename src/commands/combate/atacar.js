@@ -1,7 +1,13 @@
 const { ApplicationCommandOptionType } = require('discord.js');
-const ataques = require('../../middleware/items/ataques');
+const fisicos = require('../../middleware/items/ataques');
+const magicos = require('../../middleware/items/magicas');
 
-const options = ataques.map(ataque => ({
+const ataqueFisicoChoices = fisicos.map(ataque => ({
+    name: ataque.name,
+    value: ataque.id 
+}));
+
+const ataqueMagicoChoices = magicos.map(ataque => ({
     name: ataque.name,
     value: ataque.id 
 }));
@@ -11,20 +17,53 @@ const commands = {
     description: 'Atacar algum player.',
     options: [
         {
-            name: 'ataque',
-            description: 'Escolha o ataque que deseja usar.',
-            type: ApplicationCommandOptionType.Number, 
-            required: true,
-            choices: options
-        },
-        {
-            name: 'user',
-            description: 'Usuário a ser atacado.',
-            type: ApplicationCommandOptionType.User,
-            required: true
+            name: 'classe',
+            description: 'Escolha a classe que deseja de ataques',
+            type: ApplicationCommandOptionType.SubcommandGroup,
+            options: [
+                {
+                    name: 'fisicos',
+                    description: 'Ataques físicos',
+                    type: ApplicationCommandOptionType.Subcommand,
+                    options: [
+                        {
+                            name: 'ataque',
+                            description: 'Escolha o ataque físico que deseja usar.',
+                            type: ApplicationCommandOptionType.Number, 
+                            required: true,
+                            choices: ataqueFisicoChoices
+                        },
+                        {
+                            name: 'user',
+                            description: 'Usuário a ser atacado.',
+                            type: ApplicationCommandOptionType.User,
+                            required: true
+                        }
+                    ]
+                },
+                {
+                    name: 'magicos',
+                    description: 'Ataques mágicos',
+                    type: ApplicationCommandOptionType.Subcommand,
+                    options: [
+                        {
+                            name: 'ataque',
+                            description: 'Escolha o ataque mágico que deseja usar.',
+                            type: ApplicationCommandOptionType.Number,
+                            required: true,
+                            choices: ataqueMagicoChoices
+                        },
+                        {
+                            name: 'user',
+                            description: 'Usuário a ser atacado.',
+                            type: ApplicationCommandOptionType.User,
+                            required: true
+                        }
+                    ]
+                }
+            ]
         }
     ],
 };
-
 
 module.exports = commands;

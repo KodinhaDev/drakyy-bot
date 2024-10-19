@@ -8,8 +8,8 @@ const commands = {
             name: 'tipo',
             description: 'Tipo de treino',
             type: ApplicationCommandOptionType.Number,
-            required: true,
-            choises: [
+            required: false,
+            choices: [
                 {
                     name: 'Resistência',
                     value: 1
@@ -28,19 +28,19 @@ const commands = {
             name: 'tempo',
             description: 'Tempo de treinamento',
             type: ApplicationCommandOptionType.Number,
-            required: true,
-            choises: [
+            required: false,
+            choices: [
                 {
                     name: '1h',
                     value: 1
                 },
                 {
                     name: '3h',
-                    value: 2
+                    value: 3
                 },
                 {
                     name: '5h',
-                    value: 3
+                    value: 5
                 }
             ]
         }

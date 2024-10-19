@@ -4,23 +4,26 @@ const db = require('./database');
 const defaultUser = {
     'user': '',
     'money': 1000,
-    'mana': 100,
+    'energia': 100,
     'life': 200,
     'maxLife': 200,
     'level': 0,
+    'levelMagico': 0,
     'xp': 0,
+    'xpMagico': 0,
     'forca': 10,
     'turno': true,
-    'velocidade': 10,
+    'treinamento': {
+        emTreino: false,
+        terminoTreino: null,
+        tipo: null,
+        tempo: null
+    },
     'desmaio': {
         desmaiado: false,
         lastDate: null,
         desmaios: 0,
     },
-    'ataques': [
-        {id: 1},
-        {id: 2}
-    ],
     'inventario': []
 };
 

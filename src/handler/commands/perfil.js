@@ -2,35 +2,39 @@ const { EmbedBuilder } = require('discord.js');
 const db = require('../../middleware/database');
 // const db = new Database(process.env.MONGO);
 const newuser = require('../../middleware/newUser');
+const levels = require('../../middleware/items/levels');
+var levelMax = levels.length;
+levelMax -= 2;
 
 async function command(interaction, user) {
     const usuario = interaction.options.getUser('usuario');
-    try{
+    try {
         await newuser(usuario.id);
-    }catch(e){
+    } catch (e) {
     }
-    if(usuario != null){
-        user = await db.find({user: usuario.id}, 'user');
+    if (usuario != null) {
+        user = await db.find({ user: usuario.id }, 'user');
         interaction.user = usuario;
     }
     const embed = new EmbedBuilder()
-        .setColor('#2c3e50') 
+        .setColor('#2c3e50')
         .setTitle(`Perfil de ${interaction.user.username}`)
         .setDescription(`Aqui estão suas informações, ${interaction.user.username}!`)
         .addFields(
             { name: '💰 | Ouro', value: `${user.money}`, inline: true },
-            { name: '🪄 | Mana', value: `${user.mana}`, inline: true },
+            { name: '🪄 | Energia Amaldiçoada', value: `${user.energia}`, inline: true },
             { name: '⭐ | Level', value: `${user.level}`, inline: true },
-            { name: '🎯 | Xp', value: `${user.xp}`, inline: true },
+            { name: ' 🎯  | Xp', value: `${user.xp}`, inline: true },
+            { name: '✨ | Level Mágico', value: `${user.levelMagico}`, inline: true },
+            { name: '🔮 | Xp Mágico', value: `${user.xpMagico}`, inline: true },
             { name: '❤️ | Vida', value: user.life <= 0 ? 'Desmaiado' : `${user.life} / ${user.maxLife}`, inline: true },
             { name: '💪 | Força', value: `${user.forca}`, inline: true },
-            { name: '🏃‍♂️ | Velocidade', value: `${user.velocidade}`, inline: true },
         )
-        .setThumbnail(interaction.user.avatarURL()) 
+        .setThumbnail(interaction.user.avatarURL())
         .setFooter({ text: `Comando requisitado por ${interaction.user.username}` })
-        .setTimestamp(); 
+        .setTimestamp();
 
-    interaction.editReply({content: '', embeds: [embed], ephermal: false });
+    interaction.editReply({ content: '', embeds: [embed], ephermal: false });
 }
 
 module.exports = command;

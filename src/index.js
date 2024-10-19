@@ -7,6 +7,8 @@ require('./middleware/loadCommands');
 const newuser = require('./middleware/newUser');
 const descanso = require('./middleware/userDescanso');
 const userXp = require('./middleware/userXp');
+const ocupado = require('./middleware/ocupado');
+const treinamento = require('./middleware/treinamento');
 
 const client = new Client({
     intents: [
@@ -30,6 +32,10 @@ client.on('interactionCreate', async (interaction) => {
     await interaction.reply({content: 'Processando comando...', ephemeral: false});
     const user = await newuser(interaction.user.id);
     const file = interaction.commandName + '.js';
+    const ocupad = await ocupado(interaction, user)
+    if(ocupad == true){
+        return;
+    }
     try {
         const func = require(`./handler/commands/${file}`)
         await func(interaction, user);
@@ -49,6 +55,7 @@ client.on('messageCreate', async (message) => {
     const user = await newuser(message.author.id);
     await descanso(client, user);
     await userXp(client, user);
+    await treinamento(client, user)
 })
 
 client.login(process.env.TOKEN);

@@ -14,40 +14,51 @@ function createEmbed(title, description, user, color = '#2c3e50') {
 }
 
 async function command(interaction, user) {
+    const classe = interaction.options.getSubcommand();
     const usuario = await interaction.options.getUser('user');
-    if(usuario.id == user.user){
-        return await interaction.editReply({ content: '', embeds: [createEmbed('Erro', 'Você não pode se auto-atacar.', usuario)]})
+
+    if (usuario.id == user.user) {
+        return await interaction.editReply({ content: '', embeds: [createEmbed('Erro', 'Você não pode se auto-atacar.', usuario)] })
     }
     try {
         await newuser(usuario.id);
-    } catch (e) {}
+    } catch (e) { }
 
     const ataqueId = await interaction.options.getNumber('ataque');
-    const ataque = ataqueFind(ataqueId);
+    const ataque = ataqueFind(ataqueId, classe);
+    if (classe == 'magicos') {
 
-    if(ataque.level > user.level){
-        return await interaction.editReply({content: '', embeds: [createEmbed('Erro', `Você não pode usar ${ataque.name.toLowerCase()}, pois para usar ele precisa ser level ${ataque.level} ou superior.`, interaction.user)]})
+        if (ataque.level > user.levelMagico) {
+            return await interaction.editReply({ content: '', embeds: [createEmbed('Erro', `Você não pode usar ${ataque.name.toLowerCase()}, pois para usar ele precisa ser level ${ataque.level} em magia ou superior.`, interaction.user)] })
+        }
+
+    } else {
+
+        if (ataque.level > user.level) {
+            return await interaction.editReply({ content: '', embeds: [createEmbed('Erro', `Você não pode usar ${ataque.name.toLowerCase()}, pois para usar ele precisa ser level ${ataque.level} ou superior.`, interaction.user)] })
+        }
+
     }
 
     var dano = Math.floor(ataque.dmgBase * (1 + (user.forca / 100)));
     const userAtacado = await db.find({ user: usuario.id }, 'user');
 
-    if (userAtacado.life <= 0) {
-        const embed = createEmbed(`Ação com ${usuario.username}`, 'Este usuário está desmaiado.', usuario);
-        return await interaction.editReply({content: '', embeds: [embed], ephemeral: true });
+    if (userAtacado.life <= 0 || userAtacado.treinamento.emTreino) {
+        const embed = createEmbed(`Ação com ${usuario.username}`, 'Este usuário está ocupado, e não pode lutar.', usuario);
+        return await interaction.editReply({ content: '', embeds: [embed], ephemeral: true });
     }
-    if (user.life <= 0) {
-        const embed = createEmbed(`Ação com ${usuario.username}`, 'Você está desmaiado. Dê /descansar para mais informações.', usuario);
-        return await interaction.editReply({content: '', embeds: [embed], ephemeral: true });
+    if (user.life <= 0 || user.treinamento.emTreino) {
+        const embed = createEmbed(`Ação com ${usuario.username}`, 'Você está ocupado, e não pode lutar.', usuario);
+        return await interaction.editReply({ content: '', embeds: [embed], ephemeral: true });
     }
 
     if (user.turno === false) {
         const embed = createEmbed(`Ação com ${usuario.username}`, 'Você já deu seu ataque, espere ser atacado para atacar novamente.', usuario);
-        return await interaction.editReply({content: '', embeds: [embed], ephemeral: true });
+        return await interaction.editReply({ content: '', embeds: [embed], ephemeral: true });
     }
 
     const chance = Math.floor(Math.random() * 101);
-    if(chance > ataque.rating){
+    if (chance > ataque.rating) {
         userAtacado.turno = true;
         user.turno = false;
         await db.update({ user: user.user }, user, 'user');
@@ -58,8 +69,8 @@ async function command(interaction, user) {
         });
     }
     var critico = false;
-    if(chance >= 95){
-        dano *=3;
+    if (chance >= 95) {
+        dano *= 3;
         critico = true;
     }
     userAtacado.life -= dano;
@@ -73,28 +84,28 @@ async function command(interaction, user) {
         user.turno = false;
         user.xp += dano + 50;
         let embed
-        if(critico){
+        if (critico) {
             embed = createEmbed(`Desmaio de ${usuario.username}`, `O usuário <@${userAtacado.user}> foi desmaiado por <@${user.user}>, usando um ${ataque.name}, após um ataque crítico`, usuario);
-        }else{
+        } else {
             embed = createEmbed(`Desmaio de ${usuario.username}`, `O usuário <@${userAtacado.user}> foi desmaiado por <@${user.user}>, usando um ${ataque.name}.`, usuario);
         }
-        await interaction.editReply({content: '', embeds: [embed], ephemeral: false });
+        await interaction.editReply({ content: '', embeds: [embed], ephemeral: false });
     } else {
         userAtacado.turno = true;
         user.turno = false;
         user.xp += dano;
         let embed
-        if(critico){
-        embed = createEmbed(`Ataque de ${interaction.user.username}`, 'Você atacou com sucesso o usuário, dando '+ dano +' de dano, e foi um ataque crítico.', usuario);
+        if (critico) {
+            embed = createEmbed(`Ataque de ${interaction.user.username}`, 'Você atacou com sucesso o usuário, dando ' + dano + ' de dano, e foi um ataque crítico.', usuario);
 
-        }else{
-        embed = createEmbed(`Ataque de ${interaction.user.username}`, 'Você atacou com sucesso o usuário, dando ' + dano + ' de dano.', usuario);
-    }
-        await interaction.editReply({content: '', embeds: [embed], ephemeral: true });
+        } else {
+            embed = createEmbed(`Ataque de ${interaction.user.username}`, 'Você atacou com sucesso o usuário, dando ' + dano + ' de dano.', usuario);
+        }
+        await interaction.editReply({ content: '', embeds: [embed], ephemeral: true });
 
         try {
             await usuario.send(`Você foi atacado por ${interaction.user.username} em <#${interaction.channel.id}>.`);
-        } catch (e) {}
+        } catch (e) { }
     }
 
     await db.update({ user: user.user }, user, 'user');
