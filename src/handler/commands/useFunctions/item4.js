@@ -49,7 +49,7 @@ async function command(interaction, user) {
         });
         user.life = user.maxLife; 
         user.turno = false;
-        user.lastTurno = Date.now() + 5 * 60 * 1000;
+        user.lastTurno = Date.now() + 15 * 60 * 1000;
         await db.update({ user: user.user }, user, 'user');  
         await interaction.editReply({content: '', embeds: [embedSucesso] });  
     } else {

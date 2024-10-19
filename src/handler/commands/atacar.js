@@ -32,11 +32,19 @@ async function command(interaction, user) {
 
     const ataqueId = await interaction.options.getNumber('ataque');
     const ataque = ataqueFind(ataqueId, classe);
+    var dano
     if (classe == 'magicos') {
 
         if (ataque.level > user.levelMagico) {
             return await interaction.editReply({ content: '', embeds: [createEmbed('Erro', `Você não pode usar ${ataque.name.toLowerCase()}, pois para usar ele precisa ser level ${ataque.level} em magia ou superior.`, interaction.user)] })
         }
+
+        dano = Math.floor(ataque.dmgBase * (1 + (user.forca / 70) + (user.levelMagico / 30)));
+        user.energia -= ataque.energia;
+        if(user.energia < 0){
+            return await interaction.editReply({ content: '', embeds: [createEmbed('Erro', `Você não pode usar ${ataque.name.toLowerCase()}, pois para usar ele precisa de ${ataque.energia} amaldiçoada para usar.`, interaction.user)] })
+        }
+
 
     } else {
 
@@ -44,9 +52,10 @@ async function command(interaction, user) {
             return await interaction.editReply({ content: '', embeds: [createEmbed('Erro', `Você não pode usar ${ataque.name.toLowerCase()}, pois para usar ele precisa ser level ${ataque.level} ou superior.`, interaction.user)] })
         }
 
+        dano = Math.floor(ataque.dmgBase * (1 + (user.forca / 70) + (user.level / 30)));
+
     }
 
-    var dano = Math.floor(ataque.dmgBase * (1 + (user.forca / 100)));
     const userAtacado = await db.find({ user: usuario.id }, 'user');
 
     if (userAtacado.life <= 0 || userAtacado.treinamento.emTreino) {
@@ -67,7 +76,7 @@ async function command(interaction, user) {
     if (chance > ataque.rating) {
         userAtacado.turno = true;
         user.turno = false;
-        user.lastTurno = Date.now() + 5 * 60 * 1000;
+        user.lastTurno = Date.now() + 15 * 60 * 1000;
         await db.update({ user: user.user }, user, 'user');
         await db.update({ user: userAtacado.user }, userAtacado, 'user');
         return await interaction.editReply({
@@ -89,7 +98,7 @@ async function command(interaction, user) {
         userAtacado.desmaio.lastDate = Date.now();
         userAtacado.desmaio.desmaios++;
         user.turno = false;
-        user.lastTurno = Date.now() + 5 * 60 * 1000;
+        user.lastTurno = Date.now() + 15 * 60 * 1000;
         user.xp += dano + 50;
         let embed
         if (critico) {
@@ -101,7 +110,7 @@ async function command(interaction, user) {
     } else {
         userAtacado.turno = true;
         user.turno = false;
-        user.lastTurno = Date.now() + 5 * 60 * 1000;
+        user.lastTurno = Date.now() + 15 * 60 * 1000;
         user.xp += dano;
         let embed
         if (critico) {
@@ -114,7 +123,9 @@ async function command(interaction, user) {
 
         try {
             await usuario.send({embeds: [await embedConstructor('Aviso!', `Você foi atacado por ${interaction.user.username} em <#${interaction.channel.id}>.`)]});
-        } catch (e) { }
+        } catch (e) {
+            await interaction.channel.send({embeds: [await embedConstructor('Aviso!', `<@${usuario.id}>, você foi atacado por ${interaction.user.username}.`)]});
+         }
     }
 
     await db.update({ user: user.user }, user, 'user');
