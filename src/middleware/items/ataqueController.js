@@ -1,6 +1,6 @@
-var ataques = require('./ataques');
 
 function findAtaque(id, type){
+    var ataques = require('./ataques');
     if(type == 'magicos'){
         ataques = require('./magicas');
     }
