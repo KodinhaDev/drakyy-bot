@@ -3,6 +3,7 @@ const db = require('./database');
 
 const defaultUser = {
     'user': '',
+    'afk': false,
     'money': 1000,
     'energia': 100,
     'life': 200,

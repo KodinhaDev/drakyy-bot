@@ -27,15 +27,6 @@ const magicas = [
         id: 3
     },
     {
-        name: 'Idle Death Gamble',
-        description: 'Um ataque de alto risco que pode causar um dano massivo, mas tem uma chance de falhar,',
-        level: 15,
-        dmgBase: 95,
-        rating: 55,
-        energia: 400,
-        id: 4
-    },
-    {
         name: 'Vazio roxo',
         description: 'Uma técnica amaldiçoada que causa dano massivo e destrutivo em seu inimigo.',
         level: 17,
@@ -43,6 +34,15 @@ const magicas = [
         rating: 80,
         energia: 500,
         id: 5
+    },
+    {
+        name: 'Dismantle',
+        description: 'Uma tecnica simples e robusta de corte.',
+        level: 20,
+        dmgBase: 80,
+        rating: 90,
+        energia: 500,
+        id: 6
     }
 ];
 

@@ -8,7 +8,9 @@ async function treinamento(client, user) {
         var recompensa;
         if (user.treinamento.tipo == 1) {
             recompensa = 100 * user.treinamento.tempo;
+            console.log(recompensa)
             recompensa = recompensa * Math.floor(Math.random() * 2) + 1;
+            console.log(recompensa)
             user.maxLife += Math.round(recompensa);  
             user.forca += Math.round(recompensa / 3); 
             try {

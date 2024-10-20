@@ -12,7 +12,7 @@ items.forEach(item => {
 
 const commands = {
     name: 'usar',
-    description: 'Treine para aumentar sua força.',
+    description: 'Usar itens.',
     options: [
         {
             name: 'item',

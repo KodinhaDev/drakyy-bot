@@ -26,6 +26,7 @@ async function command(interaction, user) {
     if (usuario.id == user.user) {
         return await interaction.editReply({ content: '', embeds: [createEmbed('Erro', 'Você não pode se auto-atacar.', interaction.user)] })
     }
+
     try {
         await newuser(usuario.id);
     } catch (e) { }
@@ -57,6 +58,10 @@ async function command(interaction, user) {
     }
 
     const userAtacado = await db.find({ user: usuario.id }, 'user');
+
+    if (userAtacado.afk == true || user.afk == true) {
+        return await interaction.editReply({ content: '', embeds: [createEmbed('Erro', 'Algum de vocês dois estão afk, não podem se atacar.', interaction.user)] })
+    }
 
     if (userAtacado.life <= 0 || userAtacado.treinamento.emTreino) {
         const embed = createEmbed(`Ação com ${usuario.username}`, 'Este usuário está ocupado, e não pode lutar.', interaction.user);
