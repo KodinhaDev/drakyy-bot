@@ -1,6 +1,7 @@
 const { ApplicationCommandOptionType } = require('discord.js');
 const fisicos = require('../../middleware/items/ataques');
 const magicos = require('../../middleware/items/magicas');
+const clas = require('../../middleware/items/clas');
 
 const ataqueFisicoChoices = fisicos.map(ataque => ({
     name: ataque.name,
@@ -11,6 +12,12 @@ const ataqueMagicoChoices = magicos.map(ataque => ({
     name: ataque.name,
     value: ataque.id 
 }));
+const ataqueInatasChoices = clas.flatMap(classe => 
+    classe.ataques.map(ataque => ({
+        name: ataque.name,
+        value: ataque.id
+    }))
+);
 
 const commands = {
     name: 'atacar',
@@ -52,6 +59,26 @@ const commands = {
                             type: ApplicationCommandOptionType.Number,
                             required: true,
                             choices: ataqueMagicoChoices
+                        },
+                        {
+                            name: 'user',
+                            description: 'Usuário a ser atacado.',
+                            type: ApplicationCommandOptionType.User,
+                            required: true
+                        }
+                    ]
+                },
+                {
+                    name: 'inatas',
+                    description: 'Ataques do seu clã',
+                    type: ApplicationCommandOptionType.Subcommand,
+                    options: [
+                        {
+                            name: 'ataque',
+                            description: 'Escolha o ataque mágico que deseja usar.',
+                            type: ApplicationCommandOptionType.Number,
+                            required: true,
+                            choices: ataqueInatasChoices
                         },
                         {
                             name: 'user',

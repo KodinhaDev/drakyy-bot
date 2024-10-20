@@ -13,36 +13,9 @@ const magicas = [
         description: 'Um golpe explosivo que atinge o oponente em um instante, causando grande dano,',
         level: 7,
         dmgBase: 50,
-        rating: 90,
+        rating: 80,
         energia: 250,
         id: 2
-    },
-    {
-        name: 'Divine Dogs',
-        description: 'O usuário invoca cães espirituais que atacam o inimigo com ferocidade,',
-        level: 10,
-        dmgBase: 60,
-        rating: 85,
-        energia: 350,
-        id: 3
-    },
-    {
-        name: 'Vazio roxo',
-        description: 'Uma técnica amaldiçoada que causa dano massivo e destrutivo em seu inimigo.',
-        level: 17,
-        dmgBase: 100,
-        rating: 80,
-        energia: 500,
-        id: 5
-    },
-    {
-        name: 'Dismantle',
-        description: 'Uma tecnica simples e robusta de corte.',
-        level: 20,
-        dmgBase: 80,
-        rating: 90,
-        energia: 500,
-        id: 6
     }
 ];
 

@@ -21,6 +21,10 @@ const defaultUser = {
         tipo: null,
         tempo: null
     },
+    'cla': {
+        cla: null,
+        spins: 5
+    },
     'desmaio': {
         desmaiado: false,
         lastDate: null,

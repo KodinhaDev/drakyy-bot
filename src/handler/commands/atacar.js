@@ -37,17 +37,35 @@ async function command(interaction, user) {
     if (classe == 'magicos') {
 
         if (ataque.level > user.levelMagico) {
-            return await interaction.editReply({ content: '', embeds: [createEmbed('Erro', `Você não pode usar ${ataque.name.toLowerCase()}, pois para usar ele precisa ser level ${ataque.level} em magia ou superior.`, interaction.user)] })
+            return await interaction.editReply({ content: '', embeds: [createEmbed('Erro', `Você não pode usar ${ataque.name.toLowerCase()}, pois para usar ele precisa ser level ${ataque.level} em inata ou superior.`, interaction.user)] })
         }
 
         dano = Math.floor(ataque.dmgBase * (1 + (user.forca / 70) + (user.levelMagico / 30)));
         user.energia -= ataque.energia;
+
         if(user.energia < 0){
-            return await interaction.editReply({ content: '', embeds: [createEmbed('Erro', `Você não pode usar ${ataque.name.toLowerCase()}, pois para usar ele precisa de ${ataque.energia} amaldiçoada para usar.`, interaction.user)] })
+            return await interaction.editReply({ content: '', embeds: [createEmbed('Erro', `Você não pode usar ${ataque.name.toLowerCase()}, pois para usar ele precisa de ${ataque.energia} energia amaldiçoada para usar.`, interaction.user)] })
         }
 
 
-    } else {
+    }else if(classe == 'inatas'){
+
+        if(ataque.level > user.levelMagico){
+            return await interaction.editReply({content: '', embeds: [await embedConstructor('Erro', `Você não pode usar ${ataque.name.toLowerCase()}, pois para usar este ataque é necessário ter level ${ataque.level} em inata ou superior.`, interaction.user)]})
+        }
+
+        dano = Math.floor(ataque.dmgBase * (1 + (user.forca / 120) + (user.levelMagico / 50)));
+        user.energia -= ataque.energia;
+
+        if(user.energia < 0){
+            return await interaction.editReply({ content: '', embeds: [createEmbed('Erro', `Você não pode usar ${ataque.name.toLowerCase()}, pois para usar ele precisa de ${ataque.energia} energia amaldiçoada para usar.`, interaction.user)] })
+        }
+
+        if(user.cla.cla == null || ataque.cla != user.cla){
+            return await interaction.editReply({content: '', embeds: [await embedConstructor('Erro', `Você não faz parte deste clã para usar este poder.`, interaction.user)]})
+        }
+
+    }else {
 
         if (ataque.level > user.level) {
             return await interaction.editReply({ content: '', embeds: [createEmbed('Erro', `Você não pode usar ${ataque.name.toLowerCase()}, pois para usar ele precisa ser level ${ataque.level} ou superior.`, interaction.user)] })
