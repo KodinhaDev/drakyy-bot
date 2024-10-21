@@ -17,6 +17,10 @@ const commands = {
                 {
                     name: 'Mágico',
                     value: 2
+                },
+                {
+                    name: 'Inata',
+                    value: 3
                 }
             ]
         }

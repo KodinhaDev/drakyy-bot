@@ -24,7 +24,7 @@ async function command(interaction, user) {
         .setDescription(`Aqui estão as informações de ${interaction.user.username}!`)
         .addFields(
             { name: '💰 | Ouro', value: `${user.money}`, inline: true },
-            { name: '🪄 | Energia Amaldiçoada', value: `${user.energia}`, inline: true },
+            { name: '🪄 | Energia Amaldiçoada', value: `${user.energia} / ${user.energiaMax}`, inline: true },
             { name: '⭐ | Level', value: `${user.level}`, inline: true },
             { name: ' 🎯  | Xp', value: `${user.xp} / ${level.xp}`, inline: true },
             { name: '✨ | Level de inata', value: `${user.levelMagico}`, inline: true },
@@ -32,7 +32,6 @@ async function command(interaction, user) {
             { name: '❤️ | Vida', value: user.life <= 0 ? 'Desmaiado' : `${user.life} / ${user.maxLife}`, inline: true },
             { name: '💪 | Força', value: `${user.forca}`, inline: true },
             { name: '⛩️ | Clã', value: `${cla != undefined ? cla.name : 'Sem clã.'}`, inline: true },
-            { name: '🌌 | Spins', value: `${user.cla.spins}`, inline: true },
         )
         .setThumbnail(interaction.user.avatarURL())
         .setFooter({ text: `Comando requisitado por ${reqPor}` })

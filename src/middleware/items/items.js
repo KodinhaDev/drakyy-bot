@@ -1,29 +1,11 @@
 const items = [
     {
-        name: 'Katana',
-        description: 'Uma arma branca usada para combate.',
-        value: 400,
-        dmg: 30,
-        life: false,
-        type: 'atack',
-        id: 1
-    },
-    {
-        name: 'Soco inglês',
-        description: 'Usado como arma em combates.',
-        value: 250,
-        dmg: 20,
-        life: false,
-        type: 'atack',
-        id: 2
-    },
-    {
         name: 'Dedo do Sukuna',
         description: 'Um dos dedos do rei das maldições Sukuna.',
         value: false,
         dmg: false,
         use: true,
-        id: 3
+        id: 1
     },
     {
         name: 'Kit primeiros socorros',
@@ -31,7 +13,15 @@ const items = [
         value: 200,
         dmg: false,
         use: true,
-        id: 4
+        id: 2
+    },
+    {
+        name: 'Spin de clã',
+        description: 'Use para poder girar uma clã.',
+        value: 500,
+        dmg: false,
+        use: true,
+        id: 3
     }
 ];
 

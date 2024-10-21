@@ -6,6 +6,7 @@ const defaultUser = {
     'afk': false,
     'money': 1000,
     'energia': 100,
+    'energiaMax': 100,
     'life': 200,
     'maxLife': 200,
     'level': 0,
@@ -23,7 +24,6 @@ const defaultUser = {
     },
     'cla': {
         cla: null,
-        spins: 5
     },
     'desmaio': {
         desmaiado: false,

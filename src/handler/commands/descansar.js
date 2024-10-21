@@ -13,16 +13,25 @@ function createEmbed(title, description, user, color = '#2c3e50') {
 }
 
 async function command(interaction, user) {
-    if (!user.desmaio.desmaiado) {
-        const embed = createEmbed('Erro', 'Você não está desmaiado.', interaction.user);
+    if (!user.desmaio.desmaiado && user.energia == user.energiaMax) {
+        const embed = createEmbed('Erro', 'Você não está desmaiado nem com mana baixa.', interaction.user);
         return interaction.editReply({ content: '', embeds: [embed], ephemeral: true });
     }
 
-    const minutosPassados = Date.now() - user.desmaio.lastDate;
+    if(user.desmaio.lastDate == null){
+        const embed = createEmbed('Aguardando', 'Você começou a descansar.', interaction.user);
+        user.desmaio.lastDate = Date.now();
+        await db.update({ user: user.user }, user, 'user');
+        return interaction.editReply({ content: '', embeds: [embed], ephemeral: true });
 
+    }
+
+    const minutosPassados = Date.now() - user.desmaio.lastDate;
     if (minutosPassados >= 20 * 60 * 1000) {
-        user.life = user.maxLife - (user.maxLife * 0.25);
+        const life = user.maxLife - (user.maxLife * 0.25);
+        life >= user.life ? user.life = life : 
         user.desmaio.desmaiado = false;
+        user.energia = user.energiaMax;
         await db.update({ user: user.user }, user, 'user');
 
         const embed = createEmbed('Acordou', 'Você acordou novamente!', interaction.user);

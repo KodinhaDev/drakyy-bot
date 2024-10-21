@@ -8,9 +8,7 @@ async function treinamento(client, user) {
         var recompensa;
         if (user.treinamento.tipo == 1) {
             recompensa = 100 * user.treinamento.tempo;
-            console.log(recompensa)
-            recompensa = recompensa * Math.floor(Math.random() * 2) + 1;
-            console.log(recompensa)
+            recompensa = recompensa * (Math.floor(Math.random() * 3) + 1);
             user.maxLife += Math.round(recompensa);  
             user.forca += Math.round(recompensa / 3); 
             try {
@@ -22,7 +20,7 @@ async function treinamento(client, user) {
         }
         if (user.treinamento.tipo == 2) {
             recompensa = 20 * user.treinamento.tempo;
-            recompensa = recompensa * Math.floor(Math.random() * 2) + 1;
+            recompensa = recompensa * (Math.floor(Math.random() * 3) + 1);
             user.forca += Math.round(recompensa); 
             user.maxLife += Math.round(recompensa / 3); 
             try {
@@ -34,9 +32,9 @@ async function treinamento(client, user) {
         }
         if (user.treinamento.tipo == 3) { 
             recompensa = 100 * user.treinamento.tempo; 
-            recompensa = recompensa * Math.floor(Math.random() * 2) + 1;
+            recompensa = recompensa * (Math.floor(Math.random() * 3) + 1);
             user.xpMagico += Math.round(recompensa); 
-            user.energia += Math.round(recompensa / 3); 
+            user.energiaMax += Math.round(recompensa / 3); 
             user.maxLife += Math.round(recompensa / 3.5); 
             try {
                 const userToNotify = await client.users.fetch(user.user);

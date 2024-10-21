@@ -1,11 +1,12 @@
-const db = require('../../middleware/database');
-const embedConstructor = require('../../middleware/generateEmbed');
-const cla = require('../../middleware/items/clas');
+const db = require('../../../middleware/database');
+const embedConstructor = require('../../../middleware/generateEmbed');
+const cla = require('../../../middleware/items/clas');
 
 async function command(interaction, user){
-    if(user.cla.spins >= 1){
+    const item = user.inventario.find(item => item.id == 3);
+    if(item.quantidade >= 1 && item != undefined){
         const chance = Math.floor(Math.random() * 101);
-        user.cla.spins -= 1;
+        item.quantidade -= 1;
         var cla2 = undefined;
         cla.forEach(cla => {
             if(cla.rating < chance){

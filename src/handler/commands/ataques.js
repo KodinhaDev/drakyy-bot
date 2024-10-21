@@ -17,7 +17,7 @@ async function command(interaction) {
     function gerarEmbed(pagina) {
         const embed = new EmbedBuilder()
             .setColor('#2c3e50')
-            .setTitle(`Aqui está a lista de todos os ataques ${tipo === 1 ? 'físicos' : 'mágicos'}, ${interaction.user.username}!`)
+            .setTitle(`Aqui está a lista de todos os ataques ${tipo === 1 ? 'físicos' : 'de inata'}, ${interaction.user.username}!`)
             .setFooter({ text: `Comando requisitado por ${interaction.user.username}` })
             .setTimestamp()
             .setDescription('Para usar algum ataque dê /atacar {ataque}, caso você tenha o ataque.')
@@ -30,7 +30,7 @@ async function command(interaction) {
         ataquesPagina.forEach(ataque => {
             embed.addFields({
                 name: `${ataque.name}: ${ataque.dmgBase} de dano, ${ataque.rating}% de acerto.`,
-                value: `${ataque.description} libera no level ${tipo === 2 ? 'mágico' : ''} ${ataque.level}${tipo === 2 ? ', e gasta ' + ataque.energia + ' de energia amaldiçoada.' : '.'}`
+                value: `${ataque.description} libera no level ${tipo === 2 ? 'de inata' : ''} ${ataque.level}${tipo === 2 ? ', e gasta ' + ataque.energia + ' de energia amaldiçoada.' : '.'}`
             });
         });
 

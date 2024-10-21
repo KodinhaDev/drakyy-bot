@@ -36,14 +36,14 @@ async function command(interaction, user) {
 
     let quantidade = false;
     user.inventario.forEach(item => {
-        if (item.id === 4) {  
+        if (item.id === 2) {  
             quantidade = item.quantidade;
         }
     });
 
     if (quantidade && quantidade > 0) {
         user.inventario.forEach(item => {
-            if (item.id === 4) {
+            if (item.id === 2) {
                 item.quantidade -= 1; 
             }
         });
