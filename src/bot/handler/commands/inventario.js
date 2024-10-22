@@ -47,7 +47,7 @@ async function command(interaction, user) {
         const itensPagina = user.inventario.slice(inicio, fim);
 
         itensPagina.forEach(inv => {
-            if (inv && typeof inv === 'object' && typeof inv.quantidade === 'number') {
+            if (inv && typeof inv === 'object' && typeof inv.quantidade === 'number' && inv.quantidade >= 1) {
                 const item = itemGet(inv.id);
                 inventarioEmbed.addFields({
                     name: `${item.name} - ${inv.quantidade} unidade(s)`,
