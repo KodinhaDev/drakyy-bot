@@ -34,6 +34,10 @@ class database{
     async delete(id, colecao){
         await this.database.collection(colecao).deleteOne({user: id})
     }
+    
+    async delete2(query, colecao){
+        await this.database.collection(colecao).deleteOne(query)
+    }
 
     async update(query, updateDoc, collectionName) {
         const collection = this.database.collection(collectionName);

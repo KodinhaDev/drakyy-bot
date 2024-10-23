@@ -4,6 +4,7 @@ const db = require('../../middleware/database');
 const newuser = require('../../middleware/newUser');
 
 async function command(interaction, user) {
+    user.inventario = user.inventario.filter(item => item.quantidade != 0 || item.quantidade != null)
     const usuario = interaction.options.getUser('usuario');
     try {
         if(usuario) await newuser(usuario.id);
@@ -47,7 +48,7 @@ async function command(interaction, user) {
         const itensPagina = user.inventario.slice(inicio, fim);
 
         itensPagina.forEach(inv => {
-            if (inv && typeof inv === 'object' && typeof inv.quantidade === 'number' && inv.quantidade >= 1) {
+            if (inv && typeof inv === 'object' && typeof inv.quantidade === 'number') {
                 const item = itemGet(inv.id);
                 inventarioEmbed.addFields({
                     name: `${item.name} - ${inv.quantidade} unidade(s)`,
@@ -55,7 +56,6 @@ async function command(interaction, user) {
                     inline: true
                 });
             } else {
-                console.error('Item inválido no inventário:', inv);
             }
         });
 

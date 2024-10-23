@@ -30,7 +30,11 @@ const defaultUser = {
         lastDate: null,
         desmaios: 0,
     },
-    'inventario': []
+    'inventario': [],
+    'trade': {
+        trade: false,
+        id: null
+    }
 };
 
 async function newUser(id) {

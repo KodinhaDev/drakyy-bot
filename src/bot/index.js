@@ -31,7 +31,7 @@ client.on('interactionCreate', async (interaction) => {
     const file = interaction.commandName + '.js';
     const user = await middlewares(client, interaction.user.id);
     const ocupad = await ocupado(interaction, user);
-    if (ocupad == true && interaction.commandName != 'descansar' && interaction.commandName != 'treinar') return;
+    if (ocupad == true && interaction.commandName != 'descansar' && interaction.commandName != 'treinar' && interaction.commandName != 'perfil') return;
     try {
         const func = require(`./handler/commands/${file}`)
         await func(interaction, user);

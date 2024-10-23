@@ -2,8 +2,9 @@ const embedConstructor = require('./generateEmbed');
 const db = require('./database');
 
 async function turno(client, user) {
-    if (user.turno == false && user.lastTurno < Date.now()) {
+    if (user.turno == false && user.lastTurno < Date.now() && user.afk == false) {
         user.turno = true; 
+        user.lastTurno = Date.now();
 
         const usuarioDc = await client.users.fetch(user.user);
 

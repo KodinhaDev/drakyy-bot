@@ -10,11 +10,11 @@ async function ocupado(interaction, user){
         .setTimestamp()
         .setThumbnail(interaction.user.avatarURL());
 
-    if(user.treinamento.emTreino && interaction.commandName != 'descansar' && interaction.commandName != 'treinar'){
+    if(user.treinamento.emTreino && interaction.commandName != 'descansar' && interaction.commandName != 'treinar' && interaction.commandName != 'perfil'){
         interaction.editReply({content: '', embeds: [embed], ephermal: true})
         return true
     }
-    if(user.desmaio.desmaiado && interaction.commandName != 'descansar' && interaction.commandName != 'treinar'){
+    if(user.desmaio.desmaiado && interaction.commandName != 'descansar' && interaction.commandName != 'treinar' && interaction.commandName != 'perfil'){
         interaction.editReply({content: '', embeds: [embed], ephermal: true})
         return true
     }
