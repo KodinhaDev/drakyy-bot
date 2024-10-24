@@ -40,7 +40,7 @@ class database{
     }
 
     async update(query, updateDoc, collectionName) {
-        const collection = this.database.collection(collectionName);
+        const collection = await this.database.collection(collectionName);
         return await collection.updateOne(query, { $set: updateDoc });
     }
 

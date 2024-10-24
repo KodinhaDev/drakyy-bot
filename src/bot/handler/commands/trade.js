@@ -3,6 +3,7 @@ const embedConstructor = require('../../middleware/generateEmbed');
 const itemFinder = require('../../middleware/items/itemController');
 
 async function command(interaction, user) {
+    user = await db.find({user: interaction.user.id}, 'user');
     const subcommand = interaction.options.getSubcommand();
     const subcommandGroup = interaction.options.getSubcommandGroup(false);
 
@@ -68,12 +69,14 @@ async function command(interaction, user) {
             await interaction.editReply({ content: '', embeds: [await embedConstructor('Trade', `${quantia} de ouro adicionado na trade por <@${interaction.user.id}>.`, interaction.user)] });
         }
     } else if (subcommand === 'user') {
+        console.log(`user trade: ${user.trade.trade}`);
         const player = interaction.options.getUser('player');
         if (player.bot) return await interaction.editReply({ content: '', embeds: [await embedConstructor('Trade', 'Não se pode iniciar trade com um bot.', interaction.user)] });
         if (player.id == interaction.user.id) return await interaction.editReply({ content: '', embeds: [await embedConstructor('Trade', 'Não pode fazer troca consigo mesmo.', interaction.user)] });
-
+        
         const dbPlayer = await db.find({ user: player.id }, 'user');
-        if (user.trade.trade || dbPlayer.trade.trade) return await interaction.editReply({ content: '', embeds: [await embedConstructor('Erro', 'Um de vocês dois já estão em uma trade.', interaction.user)] });
+        console.log(`user trade: ${dbPlayer.trade.trade}`);
+        if (user.trade.trade == true || dbPlayer.trade.trade == true) return await interaction.editReply({ content: '', embeds: [await embedConstructor('Erro', 'Um de vocês dois já estão em uma trade.', interaction.user)] });
 
         const trade = {
             id: interaction.user.id + player.id,
@@ -89,6 +92,8 @@ async function command(interaction, user) {
         user.trade.trade = true;
         dbPlayer.trade.id = trade.id;
         user.trade.id = trade.id;
+        console.log(`user trade 2: ${user.trade.trade}`);
+        console.log(`user trade 2: ${dbPlayer.trade.trade}`);
         await db.insert(trade, 'trade');
         await db.update({ user: player.id }, dbPlayer, 'user');
         await db.update({ user: user.user }, user, 'user');
@@ -99,49 +104,56 @@ async function command(interaction, user) {
             if (!trade) return await interaction.editReply({ content: '', embeds: [await embedConstructor('Erro', 'Trade não encontrada.', interaction.user)] });
         
             const secondUser = await db.find({ user: trade.sendTo }, 'user');
+        
             if (!secondUser) return await interaction.editReply({ content: '', embeds: [await embedConstructor('Erro', 'Usuário da trade não encontrado.', interaction.user)] });
+        
+            // Atualizar status de aceitação da trade
             if(trade.requestBy == user.user){
                 trade.req = true;
                 await db.update({ id: user.trade.id }, trade, 'trade');
                 if(trade.sen == false) return await interaction.editReply({ content: '', embeds: [await embedConstructor('Trade', 'Esperando que o outro usuário aceite a troca.', interaction.user)] });
-            }else{
+            } else {
                 trade.sen = true;
                 await db.update({ id: user.trade.id }, trade, 'trade');
                 if(trade.req == false) return await interaction.editReply({ content: '', embeds: [await embedConstructor('Trade', 'Esperando que o outro usuário aceite a troca.', interaction.user)] });
             }
-            var items = user.user === trade.requestBy ? trade.requesterItens : trade.reciverItens;
-            items.forEach(item => {
-                const itemInInventory = user.user === trade.requestBy ? secondUser.inventario : user.inventario;
-                const existingItem = itemInInventory.find(temp => temp.id === item.id);
-                existingItem ? existingItem.quantidade += item.quantidade : itemInInventory.push({ id: item.id, quantidade: item.quantidade });
-            });
-            items = user.user != trade.requestBy ? trade.requesterItens : trade.reciverItens;
-            items.forEach(item => {
-                const itemInInventory = user.user != trade.requestBy ? secondUser.inventario : user.inventario;
-                const existingItem = itemInInventory.find(temp => temp.id === item.id);
-                existingItem ? existingItem.quantidade += item.quantidade : itemInInventory.push({ id: item.id, quantidade: item.quantidade });
-            });
-
-            if(trade.requestBy == user.user){
-                const item = trade.requesterItens.find(item => item.money != undefined)
-                user.money += item.money
-                const item2 = trade.reciverItens.find(item => item.money != undefined)
-                secondUser.money += item2.money
-            }else{
-                const item = trade.requesterItens.find(item => item.money != undefined)
-                secondUser.money += item.money
-                const item2 = trade.reciverItens.find(item => item.money != undefined)
-                user.money += item2.money
-            }
-
         
+            // Transferir itens de requestBy para sendTo
+            trade.requesterItens.forEach(item => {
+                const itemInReceiverInventory = secondUser.inventario.find(temp => temp.id === item.id);
+                if (itemInReceiverInventory) {
+                    itemInReceiverInventory.quantidade += item.quantidade;
+                } else {
+                    secondUser.inventario.push({ id: item.id, quantidade: item.quantidade });
+                }
+            });
+        
+            // Transferir itens de sendTo para requestBy
+            trade.reciverItens.forEach(item => {
+                const itemInRequesterInventory = user.inventario.find(temp => temp.id === item.id);
+                if (itemInRequesterInventory) {
+                    itemInRequesterInventory.quantidade += item.quantidade;
+                } else {
+                    user.inventario.push({ id: item.id, quantidade: item.quantidade });
+                }
+            });
+        
+            // Transferir dinheiro se houver
+            const requesterMoney = trade.requesterItens.find(item => item.money != undefined);
+            if (requesterMoney) secondUser.money += requesterMoney.money;
+        
+            const receiverMoney = trade.reciverItens.find(item => item.money != undefined);
+            if (receiverMoney) user.money += receiverMoney.money;
+        
+            // Finalizar trade
             await db.delete2({ id: user.trade.id }, 'trade');
             user.trade.trade = false;
             secondUser.trade.trade = false;
             user.trade.id = null;
             secondUser.trade.id = null;
-            await db.update({ user: user.user }, user, 'user');
+        
             await db.update({ user: secondUser.user }, secondUser, 'user');
+            await db.update({ user: user.user }, user, 'user');
             
             await interaction.editReply({ content: '', embeds: [await embedConstructor('Trade', `Trade entre <@${interaction.user.id}> e <@${secondUser.user}> foi finalizada com sucesso.`, interaction.user)] });
         } else {
